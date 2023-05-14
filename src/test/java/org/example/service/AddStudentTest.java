@@ -28,6 +28,7 @@ class AddStudentTest {
     void groupNumberPositive_shouldReturnNull() {
         Student student = new Student("test1", "Sanyi", 1, "sanyi@gmail.com");
         assertNull(this.service.addStudent(student));
+        assertTrue(false);
     }
 
     @Test
