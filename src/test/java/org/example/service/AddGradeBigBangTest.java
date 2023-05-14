@@ -1,11 +1,13 @@
 package org.example.service;
 
 import org.example.domain.Nota;
+import org.example.domain.Student;
 import org.example.domain.Tema;
 import org.example.repository.NotaXMLRepo;
 import org.example.repository.StudentXMLRepo;
 import org.example.repository.TemaXMLRepo;
 import org.example.validation.NotaValidator;
+import org.example.validation.StudentValidator;
 import org.example.validation.TemaValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,16 +30,27 @@ public class AddGradeBigBangTest {
         String filenameAssignment = "fisiere/test/Teme.xml";
         TemaXMLRepo assignmentRepo = new TemaXMLRepo(filenameAssignment);
 
-        List<Nota> list = new ArrayList<>();
-        gradeRepo.findAll().forEach(list::add);
-        list.forEach(grade -> gradeRepo.delete(grade.getID()));
-        NotaValidator validator = new NotaValidator(studentRepo, assignmentRepo);
-        this.service = new Service(null, null, null, null, gradeRepo, validator);
+        List<Nota> gradeList = new ArrayList<>();
+        gradeRepo.findAll().forEach(gradeList::add);
+        gradeList.forEach(grade -> gradeRepo.delete(grade.getID()));
+        NotaValidator gradeValidator = new NotaValidator(studentRepo, assignmentRepo);
+
+        List<Student> studentList = new ArrayList<>();
+        studentRepo.findAll().forEach(studentList::add);
+        studentList.forEach(student -> studentRepo.delete(student.getID()));
+        StudentValidator studentValidator = new StudentValidator();
+        this.service = new Service(studentRepo, studentValidator, null, null, gradeRepo, gradeValidator);
     }
 
     @Test
     void studentIdNullAndAssignmentIdNull_shouldThrow() {
         Nota grade = new Nota("1", null, null, 2, LocalDate.now());
         assertThrows(Exception.class, () -> service.addNota(grade, null));
+    }
+
+    @Test
+    void validStudent_shouldReturnNull() {
+        Student student = new Student("1", "1", 1, "1");
+        assertNull(service.addStudent(student));
     }
 }
