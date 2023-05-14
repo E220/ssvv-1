@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.domain.Student;
+import org.example.domain.Tema;
 import org.example.repository.NotaXMLRepo;
 import org.example.repository.StudentXMLRepo;
 import org.example.repository.TemaXMLRepo;
@@ -11,8 +12,10 @@ import org.example.validation.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AddGradeIncrementalIntegrationTest {
     private Service service;
@@ -28,6 +31,7 @@ public class AddGradeIncrementalIntegrationTest {
 
     @BeforeEach
     public void before() {
+        MockitoAnnotations.openMocks(this);
         NotaValidator gradeValidator = new NotaValidator(studentRepo, assignmentRepo);
         service = new Service(studentRepo, new StudentValidator(), assignmentRepo, new TemaValidator(), gradeRepo, gradeValidator);
     }
@@ -36,5 +40,14 @@ public class AddGradeIncrementalIntegrationTest {
     public void studentNameNull_shouldThrowValidationException() {
         Student student = new Student("1", null, 1, "1");
         assertThrows(ValidationException.class, () -> service.addStudent(student));
+    }
+
+    @Test
+    public void validStudentValidAssignment_shouldReturnNull() {
+        Student student = new Student("1", "1", 1, "1");
+        assertNull(service.addStudent(student));
+
+        Tema assignment = new Tema("1", "1", 1, 1);
+        assertNull(service.addTema(assignment));
     }
 }
