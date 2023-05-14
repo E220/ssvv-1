@@ -4,3 +4,15 @@ Nota: 10.0
 Predata in saptamana: 1
 Deadline: 1
 Feedback: Perfect
+
+Tema: 1
+Nota: 6.9
+Predata in saptamana: 1
+Deadline: 1
+Feedback: Nice
+
+Tema: 1
+Nota: 6.9
+Predata in saptamana: 1
+Deadline: 1
+Feedback: Nice

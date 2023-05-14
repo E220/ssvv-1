@@ -1,5 +1,6 @@
 package org.example.service;
 
+import org.example.domain.Nota;
 import org.example.domain.Student;
 import org.example.domain.Tema;
 import org.example.repository.NotaXMLRepo;
@@ -12,10 +13,12 @@ import org.example.validation.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AddGradeIncrementalIntegrationTest {
     private Service service;
@@ -49,5 +52,19 @@ public class AddGradeIncrementalIntegrationTest {
 
         Tema assignment = new Tema("1", "1", 1, 1);
         assertNull(service.addTema(assignment));
+    }
+
+    @Test
+    public void validEverything_shouldReturnsGrade() {
+        Student student = new Student("1", "1", 1, "1");
+        assertNull(service.addStudent(student));
+        Mockito.when(studentRepo.findOne(Mockito.anyString())).thenReturn(student);
+
+        Tema assignment = new Tema("1", "1", 1, 1);
+        assertNull(service.addTema(assignment));
+        Mockito.when(assignmentRepo.findOne(Mockito.anyString())).thenReturn(assignment);
+
+        Nota grade = new Nota("1", "1", "1", 6.9, LocalDate.of(2018, 10, 8));
+        assertEquals(6.9, service.addNota(grade, "Nice"));
     }
 }
