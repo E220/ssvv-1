@@ -65,4 +65,15 @@ public class AddGradeBigBangTest {
         Tema assignment = new Tema("1", "1", 1, 1);
         assertNull(service.addTema(assignment));
     }
+
+    @Test
+    void validCombination_shouldReturnGrade() {
+        Student student = new Student("1", "1", 1, "1");
+        service.addStudent(student);
+        Tema assignment = new Tema("1", "1", 1, 1);
+        service.addTema(assignment);
+
+        Nota grade = new Nota("1", "1", "1", 10, LocalDate.of(2018, 10, 8));
+        assertEquals(10, service.addNota(grade, "Perfect"));
+    }
 }
