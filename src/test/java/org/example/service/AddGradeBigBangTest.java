@@ -39,7 +39,13 @@ public class AddGradeBigBangTest {
         studentRepo.findAll().forEach(studentList::add);
         studentList.forEach(student -> studentRepo.delete(student.getID()));
         StudentValidator studentValidator = new StudentValidator();
-        this.service = new Service(studentRepo, studentValidator, null, null, gradeRepo, gradeValidator);
+
+        List<Tema> assignmentList = new ArrayList<>();
+        assignmentRepo.findAll().forEach(assignmentList::add);
+        assignmentList.forEach(assignment -> assignmentRepo.delete(assignment.getID()));
+        TemaValidator assignmentValidator = new TemaValidator();
+
+        this.service = new Service(studentRepo, studentValidator, assignmentRepo, assignmentValidator, gradeRepo, gradeValidator);
     }
 
     @Test
@@ -52,5 +58,11 @@ public class AddGradeBigBangTest {
     void validStudent_shouldReturnNull() {
         Student student = new Student("1", "1", 1, "1");
         assertNull(service.addStudent(student));
+    }
+
+    @Test
+    void validAssignment_shouldReturnNull() {
+        Tema assignment = new Tema("1", "1", 1, 1);
+        assertNull(service.addTema(assignment));
     }
 }
